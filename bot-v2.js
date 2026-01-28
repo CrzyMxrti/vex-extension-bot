@@ -817,13 +817,16 @@ function startConsole() {
 // INICIAR
 // ═══════════════════════════════════════════════════════════════
 
-if (config.token === 'TU_TOKEN_AQUI') {
-  console.log('\n⚠️ Configura el token en config.json\n');
-  process.exit(1);
+if (!config.token || config.token === 'TU_TOKEN_AQUI' || config.token === '') {
+  console.log('\n⚠️ ERROR: Token no configurado!');
+  console.log('Configura DISCORD_TOKEN en las variables de entorno de Render\n');
+  console.log('Token actual:', config.token ? '[CONFIGURADO]' : '[VACÍO]');
+  // No salir para que el servidor HTTP siga activo
 }
 
 console.log('🔄 Conectando...');
+console.log('Token detectado:', config.token ? '[OK - ' + config.token.substring(0,10) + '...]' : '[VACÍO]');
+
 client.login(config.token).catch((e) => {
-  console.error('❌ Error:', e.message);
-  process.exit(1);
+  console.error('❌ Error de login:', e.message);
 });
