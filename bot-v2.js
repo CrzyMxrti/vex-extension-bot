@@ -834,12 +834,22 @@ if (!cleanToken || cleanToken === 'TU_TOKEN_AQUI' || cleanToken === '') {
   console.log('Configura DISCORD_TOKEN en las variables de entorno de Render\n');
 } else {
   console.log('🔄 Conectando...');
-  console.log('Token detectado:', '[OK - ' + cleanToken.substring(0,10) + '...]');
+  // Mostrar más del token para verificar que cambió
+  console.log('Token hash:', cleanToken.substring(0,20) + '...' + cleanToken.substring(cleanToken.length-10));
   console.log('Longitud del token:', cleanToken.length);
+  
+  // Test de conectividad básica a Discord
+  const https = require('https');
+  https.get('https://discord.com/api/v10/gateway', (res) => {
+    console.log('✅ Conectividad con Discord API: OK (status ' + res.statusCode + ')');
+  }).on('error', (e) => {
+    console.log('❌ Error de conectividad con Discord:', e.message);
+  });
   
   // Timeout para detectar si el login se cuelga
   const loginTimeout = setTimeout(() => {
     console.log('⚠️ Login está tardando más de 10 segundos...');
+    console.log('Posibles causas: token inválido, problemas de red, o intents no habilitados');
   }, 10000);
 
   client.login(cleanToken)
@@ -851,6 +861,5 @@ if (!cleanToken || cleanToken === 'TU_TOKEN_AQUI' || cleanToken === '') {
       clearTimeout(loginTimeout);
       console.error('❌ Error de login:', e.message);
       console.error('Código:', e.code);
-      console.error('Stack:', e.stack);
     });
 }
