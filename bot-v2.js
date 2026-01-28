@@ -826,20 +826,31 @@ process.on('uncaughtException', (error) => {
   console.error('❌ Excepción no capturada:', error);
 });
 
-if (!config.token || config.token === 'TU_TOKEN_AQUI' || config.token === '') {
+// Limpiar token (por si tiene espacios)
+const cleanToken = config.token.trim();
+
+if (!cleanToken || cleanToken === 'TU_TOKEN_AQUI' || cleanToken === '') {
   console.log('\n⚠️ ERROR: Token no configurado!');
   console.log('Configura DISCORD_TOKEN en las variables de entorno de Render\n');
-  console.log('Token actual:', config.token ? '[CONFIGURADO]' : '[VACÍO]');
+} else {
+  console.log('🔄 Conectando...');
+  console.log('Token detectado:', '[OK - ' + cleanToken.substring(0,10) + '...]');
+  console.log('Longitud del token:', cleanToken.length);
+  
+  // Timeout para detectar si el login se cuelga
+  const loginTimeout = setTimeout(() => {
+    console.log('⚠️ Login está tardando más de 10 segundos...');
+  }, 10000);
+
+  client.login(cleanToken)
+    .then(() => {
+      clearTimeout(loginTimeout);
+      console.log('✅ Login exitoso, esperando evento ready...');
+    })
+    .catch((e) => {
+      clearTimeout(loginTimeout);
+      console.error('❌ Error de login:', e.message);
+      console.error('Código:', e.code);
+      console.error('Stack:', e.stack);
+    });
 }
-
-console.log('🔄 Conectando...');
-console.log('Token detectado:', config.token ? '[OK - ' + config.token.substring(0,10) + '...]' : '[VACÍO]');
-
-client.login(config.token)
-  .then(() => {
-    console.log('✅ Login exitoso, esperando evento ready...');
-  })
-  .catch((e) => {
-    console.error('❌ Error de login:', e.message);
-    console.error('Código:', e.code);
-  });
