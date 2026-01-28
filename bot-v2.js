@@ -44,7 +44,7 @@ const CONFIG_FILE = path.join(__dirname, 'config.json');
 const SERVERS_FILE = path.join(__dirname, 'servers.json');
 
 const DEFAULT_CONFIG = {
-  token: process.env.DISCORD_TOKEN || 'TU_TOKEN_AQUI',
+  token: process.env.DISCORD_TOKEN || '',
   alertChannelName: '🚨│vex-alerts'
 };
 
