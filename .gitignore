@@ -1,0 +1,17 @@
+# Dependencias
+node_modules/
+
+# Configuración local (tiene tu token!)
+config.json
+servers.json
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/

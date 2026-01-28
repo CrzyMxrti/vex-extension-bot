@@ -1,0 +1,16 @@
+{
+  "name": "vex-extension-bot",
+  "version": "2.1.0",
+  "description": "VEX EXTENSION Discord Alert Bot",
+  "main": "bot-v2.js",
+  "scripts": {
+    "start": "node bot-v2.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "minecraft-server-util": "^5.4.4"
+  }
+}
